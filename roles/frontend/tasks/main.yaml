@@ -1,0 +1,52 @@
+# Task:1 disable present nginx module
+  - name: disable present nginx module
+    ansible.builtin.command: dnf module disable nginx -y
+    
+# Task:2 enable required nginx module
+  - name: enable required nginx module
+    ansible.builtin.command: dnf module enable nginx:1.24 -y
+
+# Task:3 lnstalling nginx module
+  - name: installing nginx module
+    ansible.builtin.package:
+      name:
+        - nginx
+        - unzip
+      state: present
+
+# Task:4 Start And enable frontend server
+  - name: Start And enable frontend server
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+
+# Task:5 Remove the default content that web server is serving.
+  - name: Remove the default content that web server is serving.
+    ansible.builtin.shell: rm -rf /usr/share/nginx/html/* 
+
+# TasK:6 Download the frontend content
+  - name: Download the frontend content
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+      dest: /tmp/frontend.zip
+
+# Task:7  Unzip the Download the frontend content
+  - name: Extract the frontend content.
+    ansible.builtin.unarchive:
+      src: /tmp/frontend.zip
+      dest: /usr/share/nginx/html 
+      remote_src: yes
+
+# Task:8 copying server content
+  - name: create Nginx Reverse Proxy Configuration to reach backend services.
+    ansible.builtin.copy:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+
+
+# Task:9 Start And enable frontend server
+  - name: restart the frontend server
+    ansible.builtin.service:
+      name: nginx
+      state: restarted

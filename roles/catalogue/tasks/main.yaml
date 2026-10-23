@@ -1,0 +1,72 @@
+#Task:1 app setup
+  - name: app setup
+    ansible.builtin.import_role:
+      name: common
+      tasks_from: app-setup.yaml
+    tags:
+    - deployment
+
+#Task:2 module setup
+  - name: module setup
+    ansible.builtin.import_role:
+      name: common
+      tasks_from: nodejs-setup.yaml
+    tags:
+    - deployment
+    
+# Task:3 load the mongodb server
+  - name: load the mongodb server
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+# Task:4 Installing Client Mongodb repo
+  - name: install mongodb-client
+    ansible.builtin.package:
+      name: mongodb-mongosh
+      state: present
+
+# Task:5 connnect to mongodb catalogue
+  - name: connnect to mongodb catalogue
+    ansible.builtin.command: mongosh {{ MONGODB_HOST }} --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+    register: catalogue_output
+    changed_when: false
+
+  - name: load products into mongodb
+    ansible.builtin.shell: mongosh --host {{ MONGODB_HOST }} </app/db/master-data.js
+    when: catalogue_output.stdout | int < 0
+
+  - name: Connect to catalogue database and get database name
+    ansible.builtin.command:
+      argv:
+        - mongosh
+        - --host
+        - mongodb.prasaddev.shop
+        - catalogue
+        - --quiet
+        - --eval
+        - "db.getName()"
+    register: catalogue_db
+    changed_when: false
+
+
+  - name: Display products from catalogue
+    ansible.builtin.command:
+      argv:
+        - mongosh
+        - --host
+        - mongodb.prasaddev.shop
+        - catalogue
+        - --quiet
+        - --eval
+        - "db.products.find().forEach(p => printjson(p))"
+    register: product_data
+    changed_when: false
+
+
+  - name: app setup
+    ansible.builtin.import_role:
+      name: common
+      tasks_from: system-setup.yaml
+    tags:
+    - deployment

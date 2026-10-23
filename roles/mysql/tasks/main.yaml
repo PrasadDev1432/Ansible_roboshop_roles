@@ -1,0 +1,26 @@
+# task:- 1 Installing MySQL Server
+- name: Install MySQL Server
+  ansible.builtin.package:
+    name: mysql-server
+    state: present
+
+# task:- 2 Start and Enable MySQL server
+- name: Start & Enable MySQL server
+  ansible.builtin.service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+# task:- 3 Checking root password exist or not
+- name: Check root password
+  ansible.builtin.command: mysql -uroot -p{{ MYSQL_ROOT_PASSWORD }} -e 'show databases;'
+  register: mysql_check
+  failed_when: false
+  changed_when: false
+  no_log: true
+
+# task: - 4 setup root password
+- name: setup root password
+  ansible.builtin.command: mysql_secure_installation --set-root-pass {{ MYSQL_ROOT_PASSWORD }}
+  no_log: true
+  when: mysql_check.rc != 0

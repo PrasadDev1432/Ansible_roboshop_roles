@@ -1,0 +1,18 @@
+# Task:-1 checking current module if it is not required moduble disable it
+  - name: disable current module
+    ansible.builtin.command: dnf module disable nodejs -y
+
+# Task:-2 adding required module
+  - name: Enable required module
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+# Task:-3 installing nodejs module
+  - name: installing nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+# Task:- 11 Lets download the dependencies.
+  - name: Lets download the dependencies
+    ansible.builtin.npm:
+      path: /app

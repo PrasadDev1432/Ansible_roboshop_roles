@@ -1,0 +1,35 @@
+
+# Doc step 1: dnf module disable redis -y
+  - name: redis module disable
+    ansible.builtin.command: dnf module disable redis -y
+
+# Doc step 2: dnf module enable redis:7 -y
+  - name: Enable redis 7 module
+    ansible.builtin.command: dnf module enable redis:7 -y
+
+# Doc step 3: dnf install redis -y
+  - name: Install Redis
+    ansible.builtin.package:
+      name: redis
+      state: present
+
+# Doc step 4: Update listen address from 127.0.0.1 to 0.0.0.0 in /etc/redis/redis.conf
+  - name: Update listen address
+    ansible.builtin.replace:
+      path: /etc/redis/redis.conf
+      regexp: '^\s*#?\s*bind\s+.*$'
+      replace: 'bind 0.0.0.0'
+
+# Doc step 5: Update protected-mode from yes to no in /etc/redis/redis.conf
+  - name: Update protected-mode
+    ansible.builtin.lineinfile:
+      path: /etc/redis/redis.conf
+      regexp: '^\s*#?\s*protected-mode\s+.*$'
+      line: 'protected-mode no'
+
+# Doc step 6: Start & Enable MongoDB Service
+  - name: Start & Enable redis Service
+    ansible.builtin.service:
+      name: redis
+      state: started
+      enabled: yes
