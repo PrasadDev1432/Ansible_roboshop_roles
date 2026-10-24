@@ -41,7 +41,7 @@
       argv:
         - mongosh
         - --host
-        - mongodb.prasaddev.shop
+        - {{ MONGODB_HOST }}
         - catalogue
         - --quiet
         - --eval
@@ -55,7 +55,7 @@
       argv:
         - mongosh
         - --host
-        - mongodb.prasaddev.shop
+        - {{ MONGODB_HOST }}
         - catalogue
         - --quiet
         - --eval

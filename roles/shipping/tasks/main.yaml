@@ -2,11 +2,15 @@
   ansible.builtin.import_role:
     name: common
     tasks_from: app-setup.yaml
+  tags:
+  - deployment
 
 - name: app setup
   ansible.builtin.import_role:
     name: common
     tasks_from: java.yaml
+  tags:
+  - deployment
 
 - name: install mysql python libraries
   ansible.builtin.pip:
@@ -33,3 +37,6 @@
   ansible.builtin.import_role:
     name: common
     tasks_from: system-setup.yaml
+  tags:
+    - deployment
+

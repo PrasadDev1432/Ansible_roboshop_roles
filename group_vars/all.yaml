@@ -1,12 +1,12 @@
-MONGODB_HOST: mongodb.daws86s.fun
-REDIS_HOST: redis.daws86s.fun
-CATALOGUE_HOST: catalogue.daws86s.fun
-CART_HOST: cart.daws86s.fun
-USER_HOST: user.daws86s.fun
-RABBITMQ_HOST: rabbitmq.daws86s.fun
-MYSQL_HOST: mysql.daws86s.fun
-SHIPPING_HOST: shipping.daws86s.fun
-PAYMENT_HOST: payment.daws86s.fun
+MONGODB_HOST: mongodb.prasaddev.shop
+REDIS_HOST: redis.prasaddev.shop
+CATALOGUE_HOST: catalogue.prasaddev.shop
+CART_HOST: cart.prasaddev.shop
+USER_HOST: user.prasaddev.shop
+RABBITMQ_HOST: rabbitmq.prasaddev.shop
+MYSQL_HOST: mysql.prasaddev.shop
+SHIPPING_HOST: shipping.prasaddev.shop
+PAYMENT_HOST: payment.prasaddev.shop
 
 # ---------- Common ----------
 app_user: roboshop
@@ -18,4 +18,6 @@ app_port: 8080
 rabbitmq_user: roboshop
 rabbitmq_password: roboshop123
 
-MYSQL_ROOT_PASSWORD: "{{ lookup('amazon.aws.aws_ssm', '/roboshop/mysql/mysql_root_password', region='us-east-1', decrypt=True ) }}"
+# MYSQL_ROOT_PASSWORD: "{{ lookup('amazon.aws.aws_ssm', '/roboshop/mysql/mysql_root_password', region='us-east-1', decrypt=True ) }}"
+MYSQL_ROOT_PASSWORD: "RoboShop@1"
+MYSQL_ROOT_USER: root

@@ -1,12 +1,5 @@
-# Task:1 module setup
-  - name: module setup
-    ansible.builtin.import_role:
-      name: common
-      tasks_from: nodejs-setup.yaml
-    tags:
-    - deployment
 
-# Task:2 app setup
+# Task:1 app setup
   - name: app setup
     ansible.builtin.import_role:
       name: common
@@ -14,6 +7,16 @@
     tags:
     - deployment
 
+# Task:2 module setup
+  - name: module setup
+    ansible.builtin.import_role:
+      name: common
+      tasks_from: nodejs-setup.yaml
+    tags:
+    - deployment
+
+
+# Task:3 system setup
   - name: system setup
     ansible.builtin.import_role:
       name: common
