@@ -28,12 +28,12 @@
 
 # Task:5 connnect to mongodb catalogue
   - name: connnect to mongodb catalogue
-    ansible.builtin.command: mongosh {{ MONGODB_HOST }} --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+    ansible.builtin.command: mongosh "{{ MONGODB_HOST }}" --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
     register: catalogue_output
     changed_when: false
 
   - name: load products into mongodb
-    ansible.builtin.shell: mongosh --host {{ MONGODB_HOST }} </app/db/master-data.js
+    ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
     when: catalogue_output.stdout | int < 0
 
   - name: Connect to catalogue database and get database name
@@ -41,7 +41,7 @@
       argv:
         - mongosh
         - --host
-        - {{ MONGODB_HOST }}
+        - "{{ MONGODB_HOST }}"
         - catalogue
         - --quiet
         - --eval
@@ -55,7 +55,7 @@
       argv:
         - mongosh
         - --host
-        - {{ MONGODB_HOST }}
+        - "{{ MONGODB_HOST }}"
         - catalogue
         - --quiet
         - --eval
