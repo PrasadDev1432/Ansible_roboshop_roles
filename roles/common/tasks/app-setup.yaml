@@ -22,17 +22,17 @@
       state: directory
 
 
-# Task:-8 removing existing code "{{ component }}" files
-  - name: removing existing code "{{ component }}" files
+# Task:-8 removing existing code {{ component }} files
+  - name: removing existing code {{ component }} files
     ansible.builtin.file:
-      path: /tmp/"{{ component }}".zip
+      path: /tmp/{{ component }}.zip
       state: absent
 
 # Task:-9 Download the application code to created app directory.
   - name: Download the application code to created app directory.
     ansible.builtin.get_url:
-      url: https://roboshop-artifacts.s3.amazonaws.com/"{{ component }}"-v3.zip
-      dest: /tmp/"{{ component }}".zip
+      url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip
+      dest: /tmp/{{ component }}.zip
 
   - name: install unzip
     ansible.builtin.dnf:
@@ -40,8 +40,8 @@
       state: present
 
 # Task:- 10 Unzip the downloaded files
-  - name: Unzip the downloaded "{{ component }}" files
+  - name: Unzip the downloaded {{ component }} files
     ansible.builtin.unarchive:
-      src: /tmp/"{{ component }}".zip
+      src: /tmp/{{ component }}.zip
       dest: /app
       remote_src: yes
